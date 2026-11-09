@@ -74,7 +74,7 @@ document.getElementById('close').onclick = () => {
 document.getElementById('fs').onclick = () => document.getElementById('frame').requestFullscreen?.();
 document.getElementById('search').oninput = e => render(e.target.value);
 
-fetch('games.json')
+fetch('games.json', { cache: 'no-store' })
   .then(r => r.json())
   .then(data => { games = data; render(); })
   .catch(() => grid.innerHTML = '<p class="empty">Could not load games.json. Open this through a web server or GitHub Pages, not by double-clicking the file.</p>');
