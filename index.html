@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game Ports</title>
+<style>
+  :root { --bg:#0f1115; --card:#1a1d24; --text:#eef0f4; --muted:#9aa1ad; --accent:#6c8cff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:system-ui,sans-serif; }
+  header { padding:24px 16px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; max-width:1100px; margin:auto; }
+  h1 { margin:0; font-size:1.6rem; }
+  input { background:var(--card); border:1px solid #2a2f3a; color:var(--text); padding:10px 14px; border-radius:8px; min-width:220px; }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; padding:0 16px 32px; max-width:1100px; margin:auto; }
+  .card { background:var(--card); border-radius:12px; overflow:hidden; cursor:pointer; transition:transform .15s; border:1px solid #232733; }
+  .card:hover { transform:translateY(-3px); border-color:var(--accent); }
+  .thumb { aspect-ratio:16/9; background:#252a35 center/cover; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+  .info { padding:12px 14px; }
+  .info h2 { margin:0 0 4px; font-size:1.05rem; }
+  .info p { margin:0; color:var(--muted); font-size:.9rem; }
+  #player { position:fixed; inset:0; background:#000; display:none; flex-direction:column; }
+  #player.open { display:flex; }
+  #bar { display:flex; gap:8px; align-items:center; padding:8px 12px; background:#111; }
+  #bar span { flex:1; font-weight:600; }
+  button { background:var(--accent); color:#fff; border:0; padding:8px 14px; border-radius:6px; cursor:pointer; }
+  iframe { flex:1; border:0; width:100%; }
+  .empty { color:var(--muted); padding:16px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 Game Ports</h1>
+  <input id="search" placeholder="Search games…">
+</header>
+<div id="grid"></div>
+
+<div id="player">
+  <div id="bar">
+    <span id="title"></span>
+    <button id="fs">Fullscreen</button>
+    <button id="close">✕ Back</button>
+  </div>
+  <iframe id="frame" allow="fullscreen; gamepad; autoplay"></iframe>
+</div>
+
+<script>
+let games = [];
+const grid = document.getElementById('grid');
+
+function render(filter = '') {
+  const list = games.filter(g => g.title.toLowerCase().includes(filter.toLowerCase()));
+  grid.innerHTML = list.length ? '' : '<p class="empty">No games found.</p>';
+  for (const g of list) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const thumb = g.thumbnail ? `style="background-image:url('games/${g.folder}/${g.thumbnail}')"` : '';
+    card.innerHTML = `<div class="thumb" ${thumb}>${g.thumbnail ? '' : '🕹️'}</div>
+      <div class="info"><h2>${g.title}</h2><p>${g.description || ''}</p></div>`;
+    card.onclick = () => play(g);
+    grid.appendChild(card);
+  }
+}
+
+function play(g) {
+  document.getElementById('title').textContent = g.title;
+  document.getElementById('frame').src = `games/${g.folder}/${g.entry || 'index.html'}`;
+  document.getElementById('player').classList.add('open');
+}
+
+document.getElementById('close').onclick = () => {
+  document.getElementById('player').classList.remove('open');
+  document.getElementById('frame').src = 'about:blank';
+};
+document.getElementById('fs').onclick = () => document.getElementById('frame').requestFullscreen?.();
+document.getElementById('search').oninput = e => render(e.target.value);
+
+fetch('games.json')
+  .then(r => r.json())
+  .then(data => { games = data; render(); })
+  .catch(() => grid.innerHTML = '<p class="empty">Could not load games.json. Open this through a web server or GitHub Pages, not by double-clicking the file.</p>');
+</script>
+</body>
+</html>
