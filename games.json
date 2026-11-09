@@ -1,7 +1,37 @@
 [
-  { "title": "Example Game", "folder": "example-game", "entry": "index.html", "thumbnail": "", "description": "A tiny demo." },
-  { "title": "Game 1", "folder": "game1", "entry": "index.html", "thumbnail": "", "description": "Coming soon." },
-  { "title": "Game 2", "folder": "game2", "entry": "index.html", "thumbnail": "", "description": "Coming soon." },
-  { "title": "Game 3", "folder": "game3", "entry": "index.html", "thumbnail": "", "description": "Coming soon." },
-  { "title": "Game 4", "folder": "game4", "entry": "index.html", "thumbnail": "", "description": "Coming soon." }
+  {
+    "title": "Example Game",
+    "folder": "example-game",
+    "entry": "index.html",
+    "thumbnail": "",
+    "description": "A tiny demo."
+  },
+  {
+    "title": "Blockcraft",
+    "folder": "blockcraft",
+    "entry": "Blockcraft.html",
+    "thumbnail": "",
+    "description": "A Minecraft-style block building game."
+  },
+  {
+    "title": "Game 2",
+    "folder": "game2",
+    "entry": "index.html",
+    "thumbnail": "",
+    "description": "Coming soon."
+  },
+  {
+    "title": "Game 3",
+    "folder": "game3",
+    "entry": "index.html",
+    "thumbnail": "",
+    "description": "Coming soon."
+  },
+  {
+    "title": "Game 4",
+    "folder": "game4",
+    "entry": "index.html",
+    "thumbnail": "",
+    "description": "Coming soon."
+  }
 ]
